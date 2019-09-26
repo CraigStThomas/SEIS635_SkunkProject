@@ -7,7 +7,7 @@ public class Scratch
 	{
 		// TODO Auto-generated method stub
 		
-		StdOut.print("hello");
+		System.out.print("hello");
 
 	}
 
