@@ -31,7 +31,7 @@ public class DiceTest {
 		targetList.clear();
 	}
 	@Test
-	public void cycleTest() { // Given Die passed all tests, confirms that Dice.roll rolls all dice.
+	public void cycleTest() { // Confirms every Die cycles from the roll method in Dice
 		testDice.roll();
 		targetList.add(2);
 		targetList.add(2);
