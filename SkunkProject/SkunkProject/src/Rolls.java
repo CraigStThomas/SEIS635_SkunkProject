@@ -39,16 +39,29 @@ public class Rolls
 	{
 		LinkedList<Rolls> rollSet = new LinkedList<>();
 		
-		rollSet.add(new Rolls());
-		rollSet.add(new Rolls());
-		rollSet.add(new Rolls());
-		rollSet.add(new Rolls());
-		rollSet.add(new Rolls());
+		while (true)
+		{
+			Rolls thisRoll = new Rolls();
+			rollSet.add(thisRoll);
+			if (thisRoll.result != InterpretedRoll.pointScoring)
+			{
+				break;
+			}
+		}
+
+		int pointsTotal = 0;
 		
 		for (int i = 0; i < rollSet.size(); i++)
 		{
 			StdOut.println(rollSet.get(i));
+			
+			if (rollSet.get(i).result == InterpretedRoll.pointScoring)
+			{
+				pointsTotal += rollSet.get(i).rolledValues.get(0) + rollSet.get(i).rolledValues.get(1);
+			}
 		}
+
+		StdOut.println("total points scored (ignoring the skunk penalty) = " + pointsTotal);
 	}
 
 }
