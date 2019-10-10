@@ -18,18 +18,31 @@ public class Rolls
 	}
 	
 	// for use with predictable dice
-	public Rolls(Dice inputDice)
+	public Rolls(Dice inputDice, boolean rollThem)
 	{
 		dice = inputDice;
 		
-		dice.roll();
+		// this exists so that we can avoid burning the first predicted value in loaded dice
+		// not the best solution, but it's all i can think of right now
+		if (rollThem != false)
+		{
+			dice.roll();
+		}
 		rolledValues = dice.getLastRoll();
 		result = RollInterpreter.interpretRoll(rolledValues);
 	}
 	
 	public String toString()
 	{
-		String returnString = dice.toString() + "...interpreted as: " + result;		
+//		String returnString = dice.toString() + "...interpreted as: " + result;
+		String returnString = "Dice with last roll: ";
+		
+		for (int i = 0; i < rolledValues.size(); i++)
+		{
+			returnString += ((i == 0) ? "" : " + ") + rolledValues.get(i);
+		}
+		
+		returnString += "...interpreted as: " + result;
 		
 		return returnString;
 	}
