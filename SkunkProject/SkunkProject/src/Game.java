@@ -6,14 +6,16 @@ public class Game
 {
 	private LinkedList<Player> players;
 	int kitty;
+	boolean endgame = false;
+	private Player currentPlayer;
 	
 	public Game()
 	{
 		players = new LinkedList<>();
 		kitty = 0;
 	}
-	
-	public void initializeGame(int numberOfPlayers)
+	/*
+	public void initializeGame(int numberOfPlayers)  
 	{
 		for (int i = 0; i < numberOfPlayers; i++)
 		{
@@ -21,7 +23,24 @@ public class Game
 			players.add(new Player(playerName));
 		}
 	}
+	*/
+	public void addPlayer(String name) {
+		Player newPlayer = new Player(name);
+		players.add(newPlayer);
+	}
 	
+	public void setCurrentPlayer (int index) {
+		currentPlayer = players.get(index);
+	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	public void addToKitty(int chipsLost) {
+		kitty = kitty + chipsLost;
+	}
+	/* I really think Player should do this.
 	public void playTurn(Player player)
 	{
 		Turn turn = new Turn();
@@ -48,7 +67,7 @@ public class Game
 		
 		player.saveTurn(turn);
 	}
-
+	
 	public static void main(String[] args)
 	{
 		Game newGame = new Game();
@@ -83,4 +102,5 @@ public class Game
 		}
 		StdOut.println("size of kitty = " + newGame.kitty + " chips");
 	}
+	*/
 }

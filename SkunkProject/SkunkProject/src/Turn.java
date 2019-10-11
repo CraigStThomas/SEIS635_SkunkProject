@@ -5,17 +5,21 @@ import edu.princeton.cs.introcs.StdOut;
 public class Turn
 {
 	private LinkedList<Rolls> rolls;
+	private int turnScore;
+	private Rolls currentRoll;
+	private int chipsLost;
+	boolean doubleSkunk = false;
 	
 	public Turn()
 	{
 		rolls = new LinkedList<>();
 	}
 	
-	public Rolls addRoll()
+	public void addRoll()
 	{
 		Rolls newRoll = new Rolls();
 		rolls.add(newRoll);
-		return newRoll;
+		currentRoll = newRoll;
 	}
 	
 	public Rolls addRoll(Dice inputDice, boolean rollThem)
@@ -25,6 +29,47 @@ public class Turn
 		return newRoll;
 	}
 	
+	public void determineRollOutcome() {
+		switch (currentRoll.result) {
+			case skunk: {
+				turnScore = 0;
+				chipsLost = 1;
+				break;
+			}
+			case skunkDeuce: {
+				turnScore = 0;
+				chipsLost = 2;
+				break;
+			}
+			case doubleSkunk: {
+				turnScore = 0;
+				chipsLost = 4;
+				doubleSkunk = true;
+				break;
+			}
+			case pointScoring: {
+				turnScore = turnScore + currentRoll.getRollScore();
+				chipsLost = 0;
+				break;
+			}
+			default: {
+				StdOut.println("This should be unreachable...");
+				break;
+			}
+		}
+	}
+	
+	public int getTurnScore() {
+		return turnScore;
+	}
+	
+	public int getChipsLost() {
+		return chipsLost;
+	}
+	public Rolls getCurrentRoll() {
+		return currentRoll;
+	}
+	/*
 	public int getPointsWon()
 	{
 		int returnValue = 0;
@@ -71,7 +116,7 @@ public class Turn
 		
 		return 0;  // this should only happen if there are no skunks in the turn
 	}
-	
+*/	
 	public String toString()
 	{
 		String returnString = "";
@@ -85,13 +130,13 @@ public class Turn
 			returnString += rolls.get(i).toString();
 		}
 		
-		returnString += "\npoints won = " + getPointsWon();
+		returnString += "\npoints won = " + getTurnScore();
 		returnString += "\nchips lost = " + getChipsLost();
 		
 		return returnString;
 	}
 	
-
+/*
 	public static void main(String[] args)
 	{
 		final int TEST_TYPE = 0;
@@ -159,5 +204,5 @@ public class Turn
 		}
 		
 	}
-
+*/
 }

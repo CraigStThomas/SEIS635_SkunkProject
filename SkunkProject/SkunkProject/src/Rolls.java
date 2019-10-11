@@ -7,14 +7,15 @@ public class Rolls
 	Dice dice;
 	LinkedList<Integer> rolledValues;
 	InterpretedRoll result;
+	private int rollScore;
 	
 	public Rolls()
 	{
 		dice = new Dice();
-		
 		dice.roll();
 		rolledValues = dice.getLastRoll();
 		result = RollInterpreter.interpretRoll(rolledValues);
+		rollScore = rolledValues.get(0) + rolledValues.get(1);
 	}
 	
 	// for use with predictable dice
@@ -30,6 +31,18 @@ public class Rolls
 		}
 		rolledValues = dice.getLastRoll();
 		result = RollInterpreter.interpretRoll(rolledValues);
+	}
+	
+	public LinkedList<Integer> getRolledValues() {
+		return rolledValues;
+		}
+	
+	public int getRollScore() {
+		return rollScore;
+	}
+	
+	public InterpretedRoll getResult() {
+		return result;
 	}
 	
 	public String toString()
