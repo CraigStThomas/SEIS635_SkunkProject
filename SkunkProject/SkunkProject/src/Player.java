@@ -26,30 +26,28 @@ public class Player
 		turns.add(newTurn);
 	}
 	
-	public int continueTurn() { // I'm sure there's a better way to structure this logically, but I don't have it right now.
+	public int continueTurn() {
 		if (rollAgain()) {
 			currentTurn.addRoll();
-			currentTurn.determineRollOutcome();
-			if (currentTurn.getChipsLost() == 0) {
-				
-				return 4;
-			}
-			else if (currentTurn.doubleSkunk) {
+			int scoreResult = currentTurn.getPointsWon();
+			switch(scoreResult) {
+				case -1: 
 					playerScore = 0;
-				
-				return 3;
+					chips -= 4;
+					return 0;
+				case 0: 
+					chips -= 1;
+					return 1;
+				case 1: 	
+					chips -= 2;
+					return 2;
+				default: 
+					return 3;
 			}
-			else if (currentTurn.getChipsLost() == 2) {
-				return 2;
-			}
-			else {
-				
-				return 1;
-			}
-	}
+		}
 		else {
-			playerScore = playerScore + currentTurn.getTurnScore();
-			return 0;
+			playerScore += currentTurn.getPointsWon();
+			return 4;
 		}
 	}
 	
@@ -63,7 +61,7 @@ public class Player
 		playerScore = value;
 	}
 	
-	public Turn getCurrentTurn() { //This is probably not great practice, but some of these numbers are buried so far down I can't figure out how else to get to them.
+	public Turn getCurrentTurn() { 
 		return currentTurn;
 	}
 	

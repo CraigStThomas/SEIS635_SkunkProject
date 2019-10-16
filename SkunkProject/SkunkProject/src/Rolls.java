@@ -60,7 +60,7 @@ public class Rolls
 		return returnString;
 	}
 	
-	
+/*	
 	public static void main(String[] args)
 	{
 		LinkedList<Rolls> rollSet = new LinkedList<>();
@@ -89,5 +89,5 @@ public class Rolls
 
 		StdOut.println("total points scored (ignoring the skunk penalty) = " + pointsTotal);
 	}
-
+*/
 }

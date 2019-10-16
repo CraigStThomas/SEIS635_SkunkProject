@@ -14,16 +14,7 @@ public class Game
 		players = new LinkedList<>();
 		kitty = 0;
 	}
-	/*
-	public void initializeGame(int numberOfPlayers)  
-	{
-		for (int i = 0; i < numberOfPlayers; i++)
-		{
-			String playerName = "Player " + i;
-			players.add(new Player(playerName));
-		}
-	}
-	*/
+
 	public void addPlayer(String name) {
 		Player newPlayer = new Player(name);
 		players.add(newPlayer);
@@ -40,34 +31,7 @@ public class Game
 	public void addToKitty(int chipsLost) {
 		kitty = kitty + chipsLost;
 	}
-	/* I really think Player should do this.
-	public void playTurn(Player player)
-	{
-		Turn turn = new Turn();
-		
-		while(true)
-		{
-			if (player.playerRollDecision() == false)
-			{
-				break;
-			}
-			
-			Rolls newRoll = turn.addRoll();
-			
-			if (
-					(newRoll.result == InterpretedRoll.skunk) ||
-					(newRoll.result == InterpretedRoll.skunkDeuce) ||
-					(newRoll.result == InterpretedRoll.doubleSkunk)
-			   )
-			{
-				kitty += turn.getChipsLost();
-				break;
-			}
-		}
-		
-		player.saveTurn(turn);
-	}
-	
+/*
 	public static void main(String[] args)
 	{
 		Game newGame = new Game();

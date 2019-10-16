@@ -5,7 +5,6 @@ import edu.princeton.cs.introcs.StdOut;
 public class Turn
 {
 	private LinkedList<Rolls> rolls;
-	private int turnScore;
 	private Rolls currentRoll;
 	private int chipsLost;
 	boolean doubleSkunk = false;
@@ -27,49 +26,14 @@ public class Turn
 		Rolls newRoll = new Rolls(inputDice, rollThem);
 		rolls.add(newRoll);
 		return newRoll;
-	}
-	
-	public void determineRollOutcome() {
-		switch (currentRoll.result) {
-			case skunk: {
-				turnScore = 0;
-				chipsLost = 1;
-				break;
-			}
-			case skunkDeuce: {
-				turnScore = 0;
-				chipsLost = 2;
-				break;
-			}
-			case doubleSkunk: {
-				turnScore = 0;
-				chipsLost = 4;
-				doubleSkunk = true;
-				break;
-			}
-			case pointScoring: {
-				turnScore = turnScore + currentRoll.getRollScore();
-				chipsLost = 0;
-				break;
-			}
-			default: {
-				StdOut.println("This should be unreachable...");
-				break;
-			}
-		}
-	}
-	
-	public int getTurnScore() {
-		return turnScore;
-	}
-	
+	}	
 	public int getChipsLost() {
 		return chipsLost;
 	}
 	public Rolls getCurrentRoll() {
 		return currentRoll;
 	}
-	/*
+	
 	public int getPointsWon()
 	{
 		int returnValue = 0;
@@ -81,20 +45,20 @@ public class Turn
 				case skunk:
 					return 0;
 				case skunkDeuce:
-					return 0;
+					return 1;
 				case doubleSkunk:
 					return -1;	// -1 here indicates this turn is causing the player to lose all game points
 				case pointScoring:
 					returnValue += (rolls.get(i).rolledValues.get(0) + rolls.get(i).rolledValues.get(1));
 					break;
 				default:
-					return -2;  // this is an error, it should never happen...maybe need better return values as some confusiong can arise with this and the double skunk situation???
+					return -2;  // this is an error, it should never happen...maybe need better return values as some confusing can arise with this and the double skunk situation???
 			}
 		}
 		
 		return returnValue;
 	}
-	
+/*	
 	public int getChipsLost()
 	{		
 		for (int i = 0; i < rolls.size(); i++)
@@ -130,7 +94,7 @@ public class Turn
 			returnString += rolls.get(i).toString();
 		}
 		
-		returnString += "\npoints won = " + getTurnScore();
+		returnString += "\npoints won = " + getPointsWon();
 		returnString += "\nchips lost = " + getChipsLost();
 		
 		return returnString;
