@@ -5,7 +5,7 @@ import edu.princeton.cs.introcs.StdOut;
 public class Rolls
 {
 	Dice dice;
-	LinkedList<Integer> rolledValues;
+	LinkedList<Integer> rolledValues;	// this probably doesn't need to exist since dice holds the same information
 	InterpretedRoll result;
 //	private int rollScore;
 	
