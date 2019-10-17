@@ -1,15 +1,17 @@
 import static org.junit.Assert.*;
 import java.util.LinkedList;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DieTest {
-	private LinkedList<Integer> testOrder = new LinkedList<>();
-	private Die testDie, randomDie;
+public class DieTest
+{
+	private LinkedList<Integer>	testOrder	= new LinkedList<>();
+	private Die					testDie, randomDie;
+
 	@Before
-	public void setUp() throws Exception {
+	public void setUp()
+	{
 		testOrder.add(1);
 		testOrder.add(2);
 		testOrder.add(3);
@@ -20,16 +22,19 @@ public class DieTest {
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown()
+	{
 	}
 
 	@Test
-	public void setupTest() { // Confirms the initial result is 1
+	public void setupTest()
+	{ // Confirms the initial result is 1
 		assertEquals("Setup Error.", testDie.getLastRoll(), 1);
 	}
-	
+
 	@Test
-	public void cycleTest() { // Confirms the die cycles through the list
+	public void cycleTest()
+	{ // Confirms the die cycles through the list
 		testDie.roll();
 		assertEquals("Cycling Error 2.", testDie.getLastRoll(), 2);
 		testDie.roll();
@@ -42,7 +47,8 @@ public class DieTest {
 		assertEquals("Cycling Error 6.", testDie.getLastRoll(), 6);
 	}
 	@Test
-	public void popAddTest() { // Confirms "rolled" values are added to the end of the list
+	public void popAddTest()
+	{ // Confirms "rolled" values are added to the end of the list
 		testDie.roll();
 		testDie.roll();
 		testDie.roll();
@@ -52,8 +58,9 @@ public class DieTest {
 		assertEquals("Pop/Add Error.", testDie.getLastRoll(), 1);
 	}
 	@Test
-	public void loadTest() { // Confirms a random die can become loaded
-		randomDie = new Die(); //Empty Constructor creates random die
+	public void loadTest()
+	{ // Confirms a random die can become loaded
+		randomDie = new Die(); // Empty Constructor creates random die
 		randomDie.roll();
 		randomDie.loadTheDie(testOrder);
 		assertEquals("Load Error.", randomDie.getLastRoll(), 1);
@@ -67,5 +74,11 @@ public class DieTest {
 		assertEquals("Load Error.", randomDie.getLastRoll(), 5);
 		randomDie.roll();
 		assertEquals("Load Error.", randomDie.getLastRoll(), 6);
+	}
+	@Test
+	public void stringTest()
+	{	// confirms toString prints as expected
+//		setUp();
+		assertEquals("String Error.", testDie.toString(), "Die: 1");
 	}
 }

@@ -79,109 +79,109 @@ public class Die
 	
 	// some exmple code for playing with this die
 	
-	public static void main(String[] args)
-	{
-		final int DIE_TYPE = 2;
-		final int NUM_TRIALS = 12;
-		
-		switch (DIE_TYPE)
-		{
-			// lets make an unpredictable die (typical die) and roll it a few times
-			case 0:
-				Die myDie = new Die();
-				
-				for (int i = 0; i < NUM_TRIALS; i++)
-				{
-					myDie.roll();
-					StdOut.println(myDie);
-				}
-				break;
-				
-			// lets make a predictable die (useful for testing stuff) and roll it a few times
-			case 1:
-				LinkedList<Integer> myRollOrder1 = new LinkedList<>();
-				
-				myRollOrder1.add(1);
-				myRollOrder1.add(2);
-				myRollOrder1.add(3);
-				myRollOrder1.add(4);
-				myRollOrder1.add(5);
-				myRollOrder1.add(6);
-				myRollOrder1.add(1);
-				myRollOrder1.add(2);
-				myRollOrder1.add(3);
-				myRollOrder1.add(4);
-				myRollOrder1.add(5);
-				myRollOrder1.add(6);
-				
-				Die myDie1 = new Die(myRollOrder1);
-				
-				for (int i = 0; i < NUM_TRIALS; i++)
-				{
-					// i dont want the first pass to roll the dice, otherwise we'd burn
-					// the first of any set roll order
-					if (i != 0)
-					{
-						myDie1.roll();
-					}
-					StdOut.println(myDie1);
-				}
-				break;
-			
-			// lets get funky
-			case 2:
-				// make that same predictable die from case 1
-				LinkedList<Integer> myRollOrder2 = new LinkedList<>();
-
-				myRollOrder2.add(1);
-				myRollOrder2.add(2);
-				myRollOrder2.add(3);
-				myRollOrder2.add(4);
-				myRollOrder2.add(5);
-				myRollOrder2.add(6);
-				myRollOrder2.add(1);
-				myRollOrder2.add(2);
-				myRollOrder2.add(3);
-				myRollOrder2.add(4);
-				myRollOrder2.add(5);
-				myRollOrder2.add(6);
-				
-				Die myDie2 = new Die(myRollOrder2);
-				
-				for (int i = 0; i < NUM_TRIALS; i++)
-				{
-					// i dont want the first pass to roll the dice, otherwise we'd burn
-					// the first of any set roll order
-					if (i != 0)
-					{
-						myDie2.roll();
-					}
-					
-					// we get funky halfway through the rolls, and make the die unpredictable
-					if (i == NUM_TRIALS/2)
-					{
-						myDie2.loadTheDie(new LinkedList<Integer>());
-					}
-					
-					StdOut.println(myDie2);
-				}
-				
-				// more funk
-				// re-load the roll order (make it predictable again) and roll a few more times
-				myDie2.loadTheDie(myRollOrder2);
-				
-				for (int i = 0; i < 6; i++)
-				{
-					// i dont want the first pass to roll the dice, otherwise we'd burn
-					// the first of any set roll order
-					if (i != 0)
-					{
-						myDie2.roll();
-					}
-					
-					StdOut.println(myDie2);
-				}
-				break;
-		}		
-	}
+//	public static void main(String[] args)
+//	{
+//		final int DIE_TYPE = 2;
+//		final int NUM_TRIALS = 12;
+//		
+//		switch (DIE_TYPE)
+//		{
+//			// lets make an unpredictable die (typical die) and roll it a few times
+//			case 0:
+//				Die myDie = new Die();
+//				
+//				for (int i = 0; i < NUM_TRIALS; i++)
+//				{
+//					myDie.roll();
+//					StdOut.println(myDie);
+//				}
+//				break;
+//				
+//			// lets make a predictable die (useful for testing stuff) and roll it a few times
+//			case 1:
+//				LinkedList<Integer> myRollOrder1 = new LinkedList<>();
+//				
+//				myRollOrder1.add(1);
+//				myRollOrder1.add(2);
+//				myRollOrder1.add(3);
+//				myRollOrder1.add(4);
+//				myRollOrder1.add(5);
+//				myRollOrder1.add(6);
+//				myRollOrder1.add(1);
+//				myRollOrder1.add(2);
+//				myRollOrder1.add(3);
+//				myRollOrder1.add(4);
+//				myRollOrder1.add(5);
+//				myRollOrder1.add(6);
+//				
+//				Die myDie1 = new Die(myRollOrder1);
+//				
+//				for (int i = 0; i < NUM_TRIALS; i++)
+//				{
+//					// i dont want the first pass to roll the dice, otherwise we'd burn
+//					// the first of any set roll order
+//					if (i != 0)
+//					{
+//						myDie1.roll();
+//					}
+//					StdOut.println(myDie1);
+//				}
+//				break;
+//			
+//			// lets get funky
+//			case 2:
+//				// make that same predictable die from case 1
+//				LinkedList<Integer> myRollOrder2 = new LinkedList<>();
+//
+//				myRollOrder2.add(1);
+//				myRollOrder2.add(2);
+//				myRollOrder2.add(3);
+//				myRollOrder2.add(4);
+//				myRollOrder2.add(5);
+//				myRollOrder2.add(6);
+//				myRollOrder2.add(1);
+//				myRollOrder2.add(2);
+//				myRollOrder2.add(3);
+//				myRollOrder2.add(4);
+//				myRollOrder2.add(5);
+//				myRollOrder2.add(6);
+//				
+//				Die myDie2 = new Die(myRollOrder2);
+//				
+//				for (int i = 0; i < NUM_TRIALS; i++)
+//				{
+//					// i dont want the first pass to roll the dice, otherwise we'd burn
+//					// the first of any set roll order
+//					if (i != 0)
+//					{
+//						myDie2.roll();
+//					}
+//					
+//					// we get funky halfway through the rolls, and make the die unpredictable
+//					if (i == NUM_TRIALS/2)
+//					{
+//						myDie2.loadTheDie(new LinkedList<Integer>());
+//					}
+//					
+//					StdOut.println(myDie2);
+//				}
+//				
+//				// more funk
+//				// re-load the roll order (make it predictable again) and roll a few more times
+//				myDie2.loadTheDie(myRollOrder2);
+//				
+//				for (int i = 0; i < 6; i++)
+//				{
+//					// i dont want the first pass to roll the dice, otherwise we'd burn
+//					// the first of any set roll order
+//					if (i != 0)
+//					{
+//						myDie2.roll();
+//					}
+//					
+//					StdOut.println(myDie2);
+//				}
+//				break;
+//		}		
+//	}
 }
