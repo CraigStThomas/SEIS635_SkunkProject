@@ -7,7 +7,7 @@ public class Rolls
 	Dice dice;
 	LinkedList<Integer> rolledValues;
 	InterpretedRoll result;
-	private int rollScore;
+//	private int rollScore;
 	
 	public Rolls()
 	{
@@ -15,7 +15,7 @@ public class Rolls
 		dice.roll();
 		rolledValues = dice.getLastRoll();
 		result = RollInterpreter.interpretRoll(rolledValues);
-		rollScore = rolledValues.get(0) + rolledValues.get(1);
+//		rollScore = rolledValues.get(0) + rolledValues.get(1);
 	}
 	
 	// for use with predictable dice
@@ -35,10 +35,10 @@ public class Rolls
 	
 	public LinkedList<Integer> getRolledValues() {
 		return rolledValues;
-		}
+	}
 	
 	public int getRollScore() {
-		return rollScore;
+		return rolledValues.get(0) + rolledValues.get(1);
 	}
 	
 	public InterpretedRoll getResult() {
