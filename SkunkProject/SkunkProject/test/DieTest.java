@@ -10,7 +10,7 @@ public class DieTest
 	private Die					testDie, randomDie;
 
 	@Before
-	public void setUp()
+	public void setUp() throws Exception
 	{
 		testOrder.add(1);
 		testOrder.add(2);
@@ -22,7 +22,7 @@ public class DieTest
 	}
 
 	@After
-	public void tearDown()
+	public void tearDown() throws Exception
 	{
 	}
 

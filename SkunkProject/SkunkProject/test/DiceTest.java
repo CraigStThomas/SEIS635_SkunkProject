@@ -12,7 +12,7 @@ public class DiceTest
 	private LinkedList<Integer>				targetList		= new LinkedList<>();	// Creates LinkedList to compare against resulting Linked List
 
 	@Before
-	public void setUp()
+	public void setUp() throws Exception
 	{
 		testOrder.add(1);
 		testOrder.add(2);
