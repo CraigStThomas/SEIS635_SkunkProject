@@ -1,7 +1,5 @@
 import java.util.LinkedList;
 
-import edu.princeton.cs.introcs.StdOut;
-
 public class Game
 {
 	private LinkedList<Player> players;
@@ -30,6 +28,10 @@ public class Game
 	
 	public void addToKitty(int chipsLost) {
 		kitty = kitty + chipsLost;
+	}
+	
+	public int getKitty() {
+		return kitty;
 	}
 /*
 	public static void main(String[] args)

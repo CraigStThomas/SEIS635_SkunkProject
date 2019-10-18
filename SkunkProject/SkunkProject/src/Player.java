@@ -31,14 +31,14 @@ public class Player
 			currentTurn.addRoll();
 			int scoreResult = currentTurn.getPointsWon();
 			switch(scoreResult) {
-				case -1: 
+				case -3: 
 					playerScore = 0;
 					chips -= 4;
 					return 0;
-				case 0: 
+				case -1: 
 					chips -= 1;
 					return 1;
-				case 1: 	
+				case -2: 	
 					chips -= 2;
 					return 2;
 				default: 

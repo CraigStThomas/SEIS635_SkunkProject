@@ -7,7 +7,6 @@ public class Turn
 	private LinkedList<Rolls> rolls;
 	private Rolls currentRoll;
 	private int chipsLost;
-	boolean doubleSkunk = false;
 	
 	public Turn()
 	{
@@ -27,9 +26,9 @@ public class Turn
 		rolls.add(newRoll);
 		return newRoll;
 	}	
-	public int getChipsLost() {
-		return chipsLost;
-	}
+//	public int getChipsLost() {
+//		return chipsLost;
+//	}
 	public Rolls getCurrentRoll() {
 		return currentRoll;
 	}
@@ -40,30 +39,30 @@ public class Turn
 		
 		for (int i = 0; i < rolls.size(); i++)
 		{
-			switch (rolls.get(i).result)
+			switch (rolls.get(i).getResult())
 			{
 				case skunk:
-					return 0;
+					return -1;
 				case skunkDeuce:
-					return 1;
+					return -2;
 				case doubleSkunk:
-					return -1;	// -1 here indicates this turn is causing the player to lose all game points
+					return -3;
 				case pointScoring:
-					returnValue += (rolls.get(i).rolledValues.get(0) + rolls.get(i).rolledValues.get(1));
+					returnValue += (rolls.get(i).getRolledValues().get(0) + rolls.get(i).getRolledValues().get(1));
 					break;
 				default:
-					return -2;  // this is an error, it should never happen...maybe need better return values as some confusing can arise with this and the double skunk situation???
+					return -255;  // this is an error, it should never happen...maybe need better return values as some confusing can arise with this and the double skunk situation???
 			}
 		}
 		
 		return returnValue;
 	}
-/*	
+	
 	public int getChipsLost()
 	{		
 		for (int i = 0; i < rolls.size(); i++)
 		{
-			switch (rolls.get(i).result)
+			switch (rolls.get(i).getResult())
 			{
 				case skunk:
 					return 1;
@@ -80,7 +79,7 @@ public class Turn
 		
 		return 0;  // this should only happen if there are no skunks in the turn
 	}
-*/	
+	
 	public String toString()
 	{
 		String returnString = "";
