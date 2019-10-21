@@ -3,9 +3,11 @@ import java.util.LinkedList;
 public class Game
 {
 	private LinkedList<Player> players;
-	int kitty;
+	int kitty; // Collect and distribute chips
 	boolean endgame = false;
 	private Player currentPlayer;
+	int numberOfPlayers, currentPlayerIndex;
+	private SkunkIO console = new SkunkIO();
 	
 	public Game()
 	{
@@ -13,6 +15,80 @@ public class Game
 		kitty = 0;
 	}
 
+	public void setupGame() {
+		console.welcome();
+		numberOfPlayers = console.requestNumberOfPlayers();
+		for (int i = 1; i <= numberOfPlayers; i++) {
+			this.addPlayer(console.requestPlayerName(i));
+		}
+		this.setCurrentPlayer(0);
+		currentPlayerIndex = 0;
+		this.takeTurn();
+	}
+	
+	public void takeTurn() {
+		console.startTurn(currentPlayer);
+		console.printScoreboard(players);
+		currentPlayer.startTurn();
+		boolean rollAgain = true;
+		while (rollAgain) {
+		currentPlayer.setRollDecision(console.requestRollDecision(currentPlayer));
+		switch (currentPlayer.continueTurn()) {
+		case 0: { //double skunk
+			rollAgain = false;
+			console.printDoubleSkunkResult(currentPlayer);
+			this.addToKitty(4);
+			break;
+				}
+		case 1: { // skunk
+			rollAgain = false;
+			console.printSkunkResult(currentPlayer);
+			this.addToKitty(1);
+			break;
+				}
+		case 2: { // skunk deuce
+			rollAgain = false;
+			console.printSkunkDeuceResult(currentPlayer);
+			this.addToKitty(2);
+			break;
+				}
+		case 3: { // point scoring
+			console.printScoringResult(currentPlayer);
+			break;
+				}
+		case 4: { //decline to roll
+			rollAgain = false;
+			console.printNoRollResult(currentPlayer);
+			break;
+				}
+			}
+		}
+		if (currentPlayer.getPlayerScore() < 100)
+		this.endTurn();
+		else
+		this.startEndgame();
+	}
+	
+	public void startEndgame() {
+		console.endgameMessage(currentPlayer);
+		System.out.println("Not Yet Implemented");
+		return;
+	}
+	
+	public void endTurn() { //I'd like to find a better way to handle this, which cycles through players, 
+		//going back to player 1 when the last player is reached.
+		if (currentPlayerIndex < numberOfPlayers -1) {
+		currentPlayer = players.get(currentPlayerIndex + 1);
+		currentPlayerIndex++;
+		}
+		else {
+			currentPlayer = players.get(0);
+			currentPlayerIndex = 0;
+		}
+		this.takeTurn();
+	}
+	
+	
 	public void addPlayer(String name) {
 		Player newPlayer = new Player(name);
 		players.add(newPlayer);
