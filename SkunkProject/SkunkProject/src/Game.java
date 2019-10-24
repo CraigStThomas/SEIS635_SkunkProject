@@ -8,6 +8,8 @@ public class Game
 	private Player currentPlayer;
 	int numberOfPlayers, currentPlayerIndex;
 	private SkunkIO console = new SkunkIO();
+	private int enterEndGame = 0;
+	private Player endingPlayer;
 	
 	public Game()
 	{
@@ -15,15 +17,125 @@ public class Game
 		kitty = 0;
 	}
 
-	public void setupGame() {
+	public void setupGame()
+	{
 		console.welcome();
 		numberOfPlayers = console.requestNumberOfPlayers();
-		for (int i = 1; i <= numberOfPlayers; i++) {
+		for (int i = 1; i <= numberOfPlayers; i++)
+		{
 			this.addPlayer(console.requestPlayerName(i));
 		}
-		this.setCurrentPlayer(0);
-		currentPlayerIndex = 0;
-		this.takeTurn();
+		initGameState();
+		runGame();
+	}
+	
+	public void initGameState()
+	{
+		setCurrentPlayer(0);
+		currentPlayerIndex = -1;	// -1 is very strange here, but it should allow player index 0 to be the first player to get a turn (because player index is always bumped BEFORE takeTurn())
+		enterEndGame = 0;
+		
+		for (int i = 0; i < players.size(); i++)
+		{
+			players.get(i).setPlayerScore(0);
+		}
+	}
+	
+	public void runGame()
+	{
+		// while(true) is rarely ever a good idea, there is probably a better way here also
+		// it is just creating an infinite loop where the players can continue to play games
+		// there is an exit condition at the end of this loop
+		while (true)
+		{
+			// these can be considered "normal" turns
+			while (enterEndGame == 0)
+			{
+				identifyNextPlayer();
+				this.takeTurn();
+			}
+			
+			// identify the player that first reached >= 100 points
+			endingPlayer = currentPlayer;
+			
+			// one more turn for every other player
+			for (int i = 0; i < players.size(); i++)
+			{
+				identifyNextPlayer();
+				
+				if (players.get(currentPlayerIndex).equals(endingPlayer) == false)
+				{
+					takeTurn();
+				}
+			}
+			
+			// find out who won, give them the correct amount of chips, display who won
+			Player winner = determineWinningPlayer();			
+			endGameChipDistribution(winner);
+			console.displayWinner(winner, kitty);
+			
+			// ask the winner if they want to play again
+			// TBD, should a different player be asked? low score? player index 0?
+			if (console.requestPlayAgain(winner).equals("n"))
+			{
+				break;
+			}
+			
+			initGameState();
+		}
+	}
+	
+	public void identifyNextPlayer()
+	{
+		if (currentPlayerIndex < numberOfPlayers - 1)
+		{
+			currentPlayer = players.get(currentPlayerIndex + 1);
+			currentPlayerIndex++;
+		}
+		else
+		{
+			currentPlayer = players.get(0);
+			currentPlayerIndex = 0;
+		}
+	}
+	
+	public Player determineWinningPlayer()
+	{
+		int highScore = 0;
+		Player winningPlayer = players.get(0);
+		
+		for (int i = 0; i < players.size(); i++)
+		{
+			if (players.get(i).getPlayerScore() > highScore)
+			{
+				highScore = players.get(i).getPlayerScore();
+				winningPlayer = players.get(i);
+			}
+		}
+		
+		return winningPlayer;
+	}
+	
+	public void endGameChipDistribution(Player winningPlayer)
+	{
+		for (int i = 0; i < players.size(); i++)
+		{
+			if (players.get(i).equals(winningPlayer) == false)
+			{
+				if (players.get(i).getPlayerScore() == 0)
+				{
+					players.get(i).setChips(players.get(i).getChips() - 10);
+					kitty += 10;
+				}
+				else
+				{
+					players.get(i).setChips(players.get(i).getChips() - 5);
+					kitty += 5;
+				}
+			}
+		}
+		
+		winningPlayer.setChips(winningPlayer.getChips() + kitty);
 	}
 	
 	public void takeTurn() {
@@ -31,64 +143,52 @@ public class Game
 		console.printScoreboard(players);
 		currentPlayer.startTurn();
 		boolean rollAgain = true;
-		while (rollAgain) {
-		currentPlayer.setRollDecision(console.requestRollDecision(currentPlayer));
-		switch (currentPlayer.continueTurn()) {
-		case 0: { //double skunk
-			rollAgain = false;
-			console.printDoubleSkunkResult(currentPlayer);
-			this.addToKitty(4);
-			break;
+		while (rollAgain)
+		{
+			currentPlayer.setRollDecision(console.requestRollDecision(currentPlayer));
+			switch (currentPlayer.continueTurn())
+			{
+				case 0:
+				{ // double skunk
+					rollAgain = false;
+					console.printDoubleSkunkResult(currentPlayer);
+					this.addToKitty(4);
+					break;
 				}
-		case 1: { // skunk
-			rollAgain = false;
-			console.printSkunkResult(currentPlayer);
-			this.addToKitty(1);
-			break;
+				case 1:
+				{ // skunk
+					rollAgain = false;
+					console.printSkunkResult(currentPlayer);
+					this.addToKitty(1);
+					break;
 				}
-		case 2: { // skunk deuce
-			rollAgain = false;
-			console.printSkunkDeuceResult(currentPlayer);
-			this.addToKitty(2);
-			break;
+				case 2:
+				{ // skunk deuce
+					rollAgain = false;
+					console.printSkunkDeuceResult(currentPlayer);
+					this.addToKitty(2);
+					break;
 				}
-		case 3: { // point scoring
-			console.printScoringResult(currentPlayer);
-			break;
+				case 3:
+				{ // point scoring
+					console.printScoringResult(currentPlayer);
+					break;
 				}
-		case 4: { //decline to roll
-			rollAgain = false;
-			console.printNoRollResult(currentPlayer);
-			break;
+				case 4:
+				{ // decline to roll
+					rollAgain = false;
+					console.printNoRollResult(currentPlayer);
+					break;
 				}
 			}
 		}
-		if (currentPlayer.getPlayerScore() < 100)
-		this.endTurn();
-		else
-		this.startEndgame();
-	}
-	
-	public void startEndgame() {
-		console.endgameMessage(currentPlayer);
-		System.out.println("Not Yet Implemented");
-		return;
-	}
-	
-	public void endTurn() { //I'd like to find a better way to handle this, which cycles through players, 
-		//going back to player 1 when the last player is reached.
-		if (currentPlayerIndex < numberOfPlayers -1) {
-		currentPlayer = players.get(currentPlayerIndex + 1);
-		currentPlayerIndex++;
+		if (currentPlayer.getPlayerScore() >= 100)
+		{
+			enterEndGame = 1;
+			console.endgameMessage(currentPlayer);
 		}
-		else {
-			currentPlayer = players.get(0);
-			currentPlayerIndex = 0;
-		}
-		this.takeTurn();
 	}
-	
-	
+		
 	public void addPlayer(String name) {
 		Player newPlayer = new Player(name);
 		players.add(newPlayer);

@@ -24,6 +24,7 @@ public class SkunkIO {
 	
 	public void startTurn(Player currentPlayer) {
 		StdOut.println(currentPlayer.getName() + ", it is your turn. ");
+		StdOut.println();
 	}
 	
 	public void printScoreboard(LinkedList<Player> players) {
@@ -32,6 +33,7 @@ public class SkunkIO {
 		for (int i = 0; i < players.size(); i++) {
 			StdOut.println(players.get(i).getName() + "\t" + players.get(i).getPlayerScore() + "\t" + players.get(i).getChips() + " . ");
 		}
+		StdOut.println();
 	}
 
 	public String requestRollDecision(Player currentPlayer) {
@@ -42,6 +44,7 @@ public class SkunkIO {
 	public void printNoRollResult(Player currentPlayer) {
 		StdOut.println("You have chosen to end your turn. ");
 		StdOut.println("Your new score is " + currentPlayer.getPlayerScore());
+		StdOut.println();
 	}
 	
 	public void printDoubleSkunkResult(Player currentPlayer) {
@@ -49,6 +52,7 @@ public class SkunkIO {
 		StdOut.println("You rolled a Double Skunk! Your turn is over, you lose all your points, and you lose four chips.");
 		StdOut.println("Your total score is: 0");
 		StdOut.println("Your chip count is: " + currentPlayer.getChips());
+		StdOut.println();
 	}
 	
 	public void printSkunkDeuceResult(Player currentPlayer) {
@@ -56,6 +60,7 @@ public class SkunkIO {
 		StdOut.println("You rolled a Skunk Deuce! Your turn is over and you lose 2 chips.");
 		StdOut.println("Your total score is: " + currentPlayer.getPlayerScore());
 		StdOut.println("Your chip count is: " + currentPlayer.getChips());
+		StdOut.println();
 	}
 	
 	public void printSkunkResult(Player currentPlayer) {
@@ -63,6 +68,7 @@ public class SkunkIO {
 		StdOut.println("You rolled a Skunk! Your turn is over and you lose 1 chip.");
 		StdOut.println("Your total score is: " + currentPlayer.getPlayerScore());
 		StdOut.println("Your chip count is: " + currentPlayer.getChips());
+		StdOut.println();
 	}
 	
 	public void printScoringResult(Player currentPlayer) {
@@ -70,16 +76,25 @@ public class SkunkIO {
 		StdOut.println("Your current turn score is: " + currentPlayer.getCurrentTurn().getPointsWon()); 
 		StdOut.println("If you end your turn now, your total score would be: " + (currentPlayer.getPlayerScore() + currentPlayer.getCurrentTurn().getPointsWon()));
 		StdOut.println("Your chip count is: " + currentPlayer.getChips());
+		StdOut.println();
 	}
 	
 	public void endgameMessage(Player endgamePlayer) {
 		StdOut.println(endgamePlayer.getName() + " has reached 100 points or more. ");
 		StdOut.println("Each player other than " + endgamePlayer.getName() + " will take one more turn. ");
+		StdOut.println();
 	}
 	
 	public void displayWinner(Player winningPlayer, int chipsWon) {
 		StdOut.println(winningPlayer.getName() + " has won the game! ");
 		StdOut.println(winningPlayer.getName() + " wins " + chipsWon + " chips. ");
 		StdOut.println("Thanks for playing!");
+		StdOut.println();
+	}
+	
+	public String requestPlayAgain(Player currentPlayer)
+	{
+		StdOut.println(currentPlayer.getName() + " Would you like to play again? y/n");
+		return StdIn.readLine();
 	}
 }
