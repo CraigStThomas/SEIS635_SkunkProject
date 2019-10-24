@@ -20,6 +20,11 @@ public class Player
 		turns = new LinkedList<>();
 	}
 	
+	public void clearTurns()
+	{
+		turns = new LinkedList<>();
+	}
+	
 	public void startTurn() {
 		Turn newTurn = new Turn();
 		currentTurn = newTurn;

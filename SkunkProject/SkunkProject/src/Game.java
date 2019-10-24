@@ -38,6 +38,7 @@ public class Game
 		for (int i = 0; i < players.size(); i++)
 		{
 			players.get(i).setPlayerScore(0);
+			players.get(i).clearTurns(); 	//this is only here for the case of subsequent games, in testing it seems this isn't needed, but conceptually I think it should be here...maybe?...i dunno, leaving it in for now
 		}
 	}
 	
