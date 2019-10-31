@@ -20,13 +20,11 @@ public class Game
 	public void setupGame()
 	{
 		console.welcome();
-		numberOfPlayers = console.requestNumberOfPlayers();
-		for (int i = 1; i <= numberOfPlayers; i++)
+		int playerCount = console.requestNumberOfPlayers();
+		for (int i = 1; i <= playerCount; i++)
 		{
 			this.addPlayer(console.requestPlayerName(i));
 		}
-		initGameState();
-		runGame();
 	}
 	
 	public void initGameState()
@@ -35,10 +33,23 @@ public class Game
 		currentPlayerIndex = -1;	// -1 is very strange here, but it should allow player index 0 to be the first player to get a turn (because player index is always bumped BEFORE takeTurn())
 		enterEndGame = 0;
 		
+		LinkedList<Player> tempPlayers = new LinkedList<>();
+		
 		for (int i = 0; i < players.size(); i++)
 		{
 			players.get(i).setPlayerScore(0);
 			players.get(i).clearTurns(); 	//this is only here for the case of subsequent games, in testing it seems this isn't needed, but conceptually I think it should be here...maybe?...i dunno, leaving it in for now
+			
+			if (players.get(i).getChips() == 0)
+			{
+				tempPlayers.add(players.get(i));
+			}
+		}
+		
+		// remove players with no chips
+		for (int i = 0; i < tempPlayers.size(); i++)
+		{
+			removePlayer(tempPlayers.get(i));
 		}
 	}
 	
@@ -49,11 +60,18 @@ public class Game
 		// there is an exit condition at the end of this loop
 		while (true)
 		{
+			initGameState();
+			
 			// these can be considered "normal" turns
 			while (enterEndGame == 0)
 			{
 				identifyNextPlayer();
-				this.takeTurn();
+				takeTurn();
+				if (currentPlayer.getPlayerScore() >= GameConstants.WINNING_POINTS)
+				{
+					enterEndGame = 1;
+					console.endgameMessage(currentPlayer);
+				}
 			}
 			
 			// identify the player that first reached >= 100 points
@@ -81,8 +99,6 @@ public class Game
 			{
 				break;
 			}
-			
-			initGameState();
 		}
 	}
 	
@@ -119,19 +135,27 @@ public class Game
 	
 	public void endGameChipDistribution(Player winningPlayer)
 	{
+		int tempChips = 0;
+		
 		for (int i = 0; i < players.size(); i++)
 		{
 			if (players.get(i).equals(winningPlayer) == false)
 			{
 				if (players.get(i).getPlayerScore() == 0)
 				{
-					players.get(i).setChips(players.get(i).getChips() - 10);
-					kitty += 10;
+					tempChips = players.get(i).getChips();
+					if (tempChips >= GameConstants.LOSER_ZERO_SCORE_CHIP_PENALTY)
+						tempChips = GameConstants.LOSER_ZERO_SCORE_CHIP_PENALTY;
+					players.get(i).setChips(players.get(i).getChips() - tempChips);
+					kitty += tempChips;
 				}
 				else
 				{
-					players.get(i).setChips(players.get(i).getChips() - 5);
-					kitty += 5;
+					tempChips = players.get(i).getChips();
+					if (tempChips >= GameConstants.LOSER_CHIP_PENALTY)
+						tempChips = GameConstants.LOSER_CHIP_PENALTY;
+					players.get(i).setChips(players.get(i).getChips() - tempChips);
+					kitty += tempChips;
 				}
 			}
 		}
@@ -140,59 +164,81 @@ public class Game
 	}
 	
 	public void takeTurn() {
-		console.startTurn(currentPlayer);
-		console.printScoreboard(players);
-		currentPlayer.startTurn();
-		boolean rollAgain = true;
-		while (rollAgain)
+		if (currentPlayer.getChips() <= 0)
 		{
-			currentPlayer.setRollDecision(console.requestRollDecision(currentPlayer));
-			switch (currentPlayer.continueTurn())
+			console.turnSkip(currentPlayer);
+		}
+		else 
+		{
+			console.startTurn(currentPlayer);
+			console.printScoreboard(players);
+			currentPlayer.startTurn();
+			boolean rollAgain = true;
+			while (rollAgain)
 			{
-				case 0:
-				{ // double skunk
-					rollAgain = false;
-					console.printDoubleSkunkResult(currentPlayer);
-					this.addToKitty(4);
-					break;
-				}
-				case 1:
-				{ // skunk
-					rollAgain = false;
-					console.printSkunkResult(currentPlayer);
-					this.addToKitty(1);
-					break;
-				}
-				case 2:
-				{ // skunk deuce
-					rollAgain = false;
-					console.printSkunkDeuceResult(currentPlayer);
-					this.addToKitty(2);
-					break;
-				}
-				case 3:
-				{ // point scoring
-					console.printScoringResult(currentPlayer);
-					break;
-				}
-				case 4:
-				{ // decline to roll
-					rollAgain = false;
-					console.printNoRollResult(currentPlayer);
-					break;
+				currentPlayer.setRollDecision(console.requestRollDecision(currentPlayer));
+				int tempChips = 0;
+				switch (currentPlayer.continueTurn())
+				{
+					case 0:
+					{ // double skunk
+						rollAgain = false;
+						tempChips = currentPlayer.getChips();
+						if (tempChips >= GameConstants.SKUNK_DOUBLE_CHIPS_LOST)
+							tempChips = GameConstants.SKUNK_DOUBLE_CHIPS_LOST;
+						currentPlayer.setChips(currentPlayer.getChips() - tempChips);
+						this.addToKitty(tempChips);
+						console.printDoubleSkunkResult(currentPlayer);
+						break;
+					}
+					case 1:
+					{ // skunk
+						rollAgain = false;
+						tempChips = currentPlayer.getChips();
+						if (tempChips >= GameConstants.SKUNK_CHIPS_LOST)
+							tempChips = GameConstants.SKUNK_CHIPS_LOST;
+						currentPlayer.setChips(currentPlayer.getChips() - tempChips);
+						this.addToKitty(tempChips);
+						console.printSkunkResult(currentPlayer);
+						break;
+					}
+					case 2:
+					{ // skunk deuce
+						rollAgain = false;
+						tempChips = currentPlayer.getChips();
+						if (tempChips >= GameConstants.SKUNK_DEUCE_CHIPS_LOST)
+							tempChips = GameConstants.SKUNK_DEUCE_CHIPS_LOST;
+						currentPlayer.setChips(currentPlayer.getChips() - tempChips);
+						this.addToKitty(tempChips);
+						console.printSkunkDeuceResult(currentPlayer);
+						break;
+					}
+					case 3:
+					{ // point scoring
+						console.printScoringResult(currentPlayer);
+						break;
+					}
+					case 4:
+					{ // decline to roll
+						rollAgain = false;
+						console.printNoRollResult(currentPlayer);
+						break;
+					}
 				}
 			}
-		}
-		if (currentPlayer.getPlayerScore() >= 100)
-		{
-			enterEndGame = 1;
-			console.endgameMessage(currentPlayer);
 		}
 	}
 		
 	public void addPlayer(String name) {
 		Player newPlayer = new Player(name);
 		players.add(newPlayer);
+		numberOfPlayers = players.size();
+	}
+	
+	public void removePlayer(Player player)
+	{
+		players.remove(player);
+		numberOfPlayers = players.size();
 	}
 	
 	public void setCurrentPlayer (int index) {

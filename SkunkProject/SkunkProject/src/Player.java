@@ -38,13 +38,13 @@ public class Player
 			switch(scoreResult) {
 				case -3: 
 					playerScore = 0;
-					chips -= 4;
+//					chips -= 4;
 					return 0;
 				case -1: 
-					chips -= 1;
+//					chips -= 1;
 					return 1;
 				case -2: 	
-					chips -= 2;
+//					chips -= 2;
 					return 2;
 				default: 
 					return 3;

@@ -4,5 +4,6 @@ public class SkunkApp
     {
     	Game skunkGame = new Game();
     	skunkGame.setupGame();
+		skunkGame.runGame();
     }
 }
