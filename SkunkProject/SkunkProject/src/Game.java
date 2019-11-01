@@ -19,7 +19,10 @@ public class Game
 
 	public void setupGame()
 	{
-		console.welcome();
+		String seeRules = console.welcome();
+		if (seeRules.contentEquals("y")) { 
+			console.showRules();
+		}
 		numberOfPlayers = console.requestNumberOfPlayers();
 		for (int i = 1; i <= numberOfPlayers; i++)
 		{
