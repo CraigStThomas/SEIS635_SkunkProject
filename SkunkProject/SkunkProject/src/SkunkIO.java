@@ -32,6 +32,11 @@ public class SkunkIO {
 		StdOut.println();
 	}
 	
+	public void turnSkip(Player currentPlayer) {
+		StdOut.println(currentPlayer.getName() + ", you have no chips.  Your turn is skipped.");
+		StdOut.println();
+	}
+	
 	public void printScoreboard(LinkedList<Player> players) {
 		StdOut.println("Here is the current scoreboard.");
 		StdOut.println("Name: \t Score: \t Chips: .");

@@ -6,7 +6,7 @@ public class Turn
 {
 	private LinkedList<Rolls> rolls;
 	private Rolls currentRoll;
-	private int chipsLost;
+//	private int chipsLost;
 	
 	public Turn()
 	{
@@ -50,8 +50,6 @@ public class Turn
 				case pointScoring:
 					returnValue += (rolls.get(i).getRolledValues().get(0) + rolls.get(i).getRolledValues().get(1));
 					break;
-				default:
-					return -255;  // this is an error, it should never happen...maybe need better return values as some confusing can arise with this and the double skunk situation???
 			}
 		}
 		
@@ -65,15 +63,13 @@ public class Turn
 			switch (rolls.get(i).getResult())
 			{
 				case skunk:
-					return 1;
+					return GameConstants.SKUNK_CHIPS_LOST;
 				case skunkDeuce:
-					return 2;
+					return GameConstants.SKUNK_DEUCE_CHIPS_LOST;
 				case doubleSkunk:
-					return 4;
+					return GameConstants.SKUNK_DOUBLE_CHIPS_LOST;
 				case pointScoring:
 					break;
-				default:
-					return -2;  // this is an error, it should never happen...see comment in getPointsWon
 			}
 		}
 		
