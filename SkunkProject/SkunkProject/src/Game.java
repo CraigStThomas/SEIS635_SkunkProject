@@ -23,9 +23,6 @@ public class Game
 		if (seeRules.contentEquals("y")) { 
 			console.showRules();
 		}
-		numberOfPlayers = console.requestNumberOfPlayers();
-		for (int i = 1; i <= numberOfPlayers; i++)
-		console.welcome();
 		int playerCount = console.requestNumberOfPlayers();
 		for (int i = 1; i <= playerCount; i++)
 		{
